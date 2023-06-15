@@ -7,3 +7,8 @@ Para usar el script mediante terminal:
 ```
 py fastMaps.py <direccion>
 ``` 
+
+Otra forma de ejecutar el comando es teniendo la direccion a buscar en el portapapeles:
+```
+py fastMaps.py 
+```
