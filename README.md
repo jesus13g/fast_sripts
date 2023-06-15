@@ -1,5 +1,5 @@
 # fast_sripts
-Se trata de sripts para uso diario que nos ayuden a ser más eficiente en nuestras tareas diarias.
+Se tratan de sripts para uso diario que nos ayuden a ser más eficiente en nuestras tareas diarias.
 
 ## fastMaps.py 
 Este script realizar una busqueda rapida en google maps.
