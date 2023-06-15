@@ -12,3 +12,8 @@ Otra forma de ejecutar el comando es teniendo la direccion a buscar en el portap
 ```
 py fastMaps.py 
 ```
+
+
+## weather.py
+Este sript realiza una busqueda meteorologíca de la ciudad deseada.
+--En proceso... 
