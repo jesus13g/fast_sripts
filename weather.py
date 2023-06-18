@@ -51,20 +51,21 @@ def weather(ciudad, margen_tiempo):
                                 '/html/body/div[5]/div[1]/div[4]/div/main/section[3]/section/section/ul[1]/li[2]/h2/a'))
         ).click() # por horas        
         
-        # /html/body/div[5]/div[1]/div[4]/div/main/section[3]/article/ul
+        
         tabla_horas = driver.find_element(By.CLASS_NAME, 'days')
-        filas = tabla_horas.find_elements(By.XPATH, './li')
+        filas = tabla_horas.find_elements(By.TAG_NAME, 'li')
+        datos = []
         
         for fila in filas:
-            datos_p = fila.find_elements(By.XPATH, './div/p')
-            if len(datos_p) >= 2:
-                hora = datos_p[0].text
-                temperatura = datos_p[1].text
-                print(f"Hora: {hora}, Temperatura: {temperatura}")
+            list_p = fila.find_elements(By.TAG_NAME, 'p')
+            
+            for p in list_p:
+                datos.append(p.get_attribute('textContent').replace(" ", ""))
+              
+        print(datos)  
         
         
-        
-    time.sleep(8)
+    time.sleep(6)
 
 
 
