@@ -1,4 +1,4 @@
-# fast_sripts
+# fast Sripts
 Se tratan de sripts para uso diario que nos ayuden a ser más eficiente en nuestras tareas diarias.
 
 ## fastMaps.py 
