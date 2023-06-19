@@ -1,7 +1,6 @@
-import os
-import sys
+import os,sys
 from tqdm import tqdm
-import time
+
 """
 Nos permite crear carpetas en un directorio deseado
 """
@@ -41,8 +40,7 @@ def generar_folders(ruta, namesFoldes):
     n_name = len(list_namesFoldes)
     print('|' + '-----------------' * n_name + '|')
     print('| Se van a crear las carpetas:')
-    for name in list_namesFoldes:
-        print(f"| - {name} ".ljust(50) + '|')
+    print('| ' + ', '.join(list_namesFoldes).ljust(50) + '|')
     print('|' + '-----------------' * n_name + '|')
 
     barra_progreso = tqdm(total=n_name, 
@@ -91,13 +89,11 @@ def mostrar_resultados(yaExiste, creados):
 ################################################################
 
 ##### MAIN #####
-inicio = time.time()
 ruta,namesFoldes = comprobar_variables(sys.argv)
 
 yaExiste,creados = generar_folders(ruta=ruta,namesFoldes=namesFoldes)
 
 mostrar_resultados(yaExiste=yaExiste,creados=creados)
 
-fin = time.time()
-print(fin-inicio)
+
 
