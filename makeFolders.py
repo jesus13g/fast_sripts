@@ -1,11 +1,30 @@
 import os
 import sys
 from tqdm import tqdm
-import time
 
 """
 Nos permite crear carpetas en un directorio deseado
 """
+
+
+def mostrar_resultados(yaExiste, creados):
+    print('|' + '-----------------' * n_name + '|')
+    print('| Se crearon las carpetas:')
+    if creados != []:
+        print('| ' + ', '.join(creados).ljust(50) + '|')
+    else:
+        print('| Ninguna'.ljust(50) + '|')
+
+    print('|' + '-----------------' * n_name + '|')
+
+    print('| Ya existian las carpetas:                       |')
+    if yaExiste != []:
+        print('| ' + ', '.join(yaExiste).ljust(50) + '|')
+    else:
+        print('| Ninguna'.ljust(50) + '|')
+
+
+
 
 if len(sys.argv) < 3:
     print('Parametros erroneos')
@@ -26,22 +45,34 @@ namesFoldes = namesFoldes.replace(",", " ")
 list_namesFoldes = namesFoldes.split()
 
 # Mostramos a lista
-print(' Se van a crear las carpetas:')
-print(" -"+ ' -'.join(list_namesFoldes) ) 
+n_name = len(list_namesFoldes)
+print('|' + '-----------------' * n_name + '|')
+print('| Se van a crear las carpetas:')
+for name in list_namesFoldes:
+    print(f"| - {name} ".ljust(50) + '|')
+print('|' + '-----------------' * n_name + '|')
 
-barra_progreso = tqdm(total=len(list_namesFoldes), 
-                      bar_format="{l_bar}{bar} {n_fmt}/{total_fmt}", 
-                      ncols= 50)
+barra_progreso = tqdm(total=n_name, 
+                      bar_format="| {l_bar}{bar} {n_fmt}/{total_fmt} procesos ", 
+                      ncols= 40)
+
+# Lista con los nombres de los ficheros que ya existen 
+yaExiste = []
+# Lista con los nombres de los ficheros creados 
+creados = []
 
 for name in list_namesFoldes:
     barra_progreso.update()
-    cpy_ruta = ruta + '\\' + name
+    ruta_folder = ruta + '\\' + name
     
-    if not os.path.exists(cpy_ruta):
-        os.makedirs(cpy_ruta)
+    if not os.path.exists(ruta_folder):
+        os.makedirs(ruta_folder)
+        creados.append(name)
     else:
-        print('Existe la carpeta '+str(name))
-    time.sleep(0.1)
-        
+        yaExiste.append(name)
+    
 barra_progreso.close()
+
+mostrar_resultados(yaExiste=yaExiste,creados=creados)
+    
 
