@@ -14,12 +14,12 @@ py fastMaps.py
 ```
 
 
-## weather.py
+## weather.py 🌤
 Este sript realiza una busqueda meteorologíca de la ciudad deseada.
 --En desarrollo... 
 
 
-## makeFolders.py
+## makeFolders.py 📂
 Este script crea una serie de directorios en la ruta deseada con los nombres que se desee.
 
 Para usar el script mediante terminal:
