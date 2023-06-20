@@ -33,17 +33,16 @@ def comprobar_variables(argumentos):
 
 def generar_folders(ruta, namesFoldes):
     # Dividimos los nombres en una lista
-    namesFoldes = namesFoldes.replace(",", " ")
-    list_namesFoldes = namesFoldes.split()
-
+    generarNombres(names=namesFoldes)
+    """
     # Mostramos a lista
     n_name = len(list_namesFoldes)
     print('|' + '-----------------' * n_name + '|')
     print('| Se van a crear las carpetas:')
     print('| ' + ', '.join(list_namesFoldes).ljust(50) + '|')
     print('|' + '-----------------' * n_name + '|')
-
-    barra_progreso = tqdm(total=n_name, 
+    """
+    """barra_progreso = tqdm(total=n_name, 
                         bar_format="| {l_bar}{bar} {n_fmt}/{total_fmt} procesos ", 
                         ncols= 40)
 
@@ -62,9 +61,39 @@ def generar_folders(ruta, namesFoldes):
         else:
             yaExiste.append(name)
         
-    barra_progreso.close()
+    barra_progreso.close()"""
     
-    return yaExiste,creados
+    #return yaExiste,creados
+
+################################################################
+
+def generarNombres(names):
+    print(names)
+    names = names.replace("],", "] ")
+    print(names)
+    list_names = names.split()    
+    print(list_names)
+    
+    lista_raizes = []
+    for name in list_names:
+         lista_raizes.append(subcarpetas_recursivo(name))
+         print(lista_raizes)
+    
+    
+    
+def subcarpetas_recursivo(names):
+    print(names)
+    if '[' in names and ']' in names:
+        names = names.replace("["," ")
+        names = names.replace("]","")
+        division = names.split()
+        
+        return {}
+        print(names)
+    else:
+        return {names: None}
+    
+################################################################
 
 ################################################################
 
@@ -91,9 +120,10 @@ def mostrar_resultados(yaExiste, creados):
 ##### MAIN #####
 ruta,namesFoldes = comprobar_variables(sys.argv)
 
-yaExiste,creados = generar_folders(ruta=ruta,namesFoldes=namesFoldes)
+#yaExiste,creados = 
+generar_folders(ruta=ruta,namesFoldes=namesFoldes)
 
-mostrar_resultados(yaExiste=yaExiste,creados=creados)
+#mostrar_resultados(yaExiste=yaExiste,creados=creados)
 
 
 
