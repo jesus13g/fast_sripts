@@ -19,12 +19,6 @@ Este sript realiza una busqueda meteorologíca de la ciudad deseada.
 --En desarrollo... 
 
 
-## makeFolders.py 📂
-Este script crea una serie de directorios en la ruta deseada con los nombres que se desee.
-
-Para usar el script mediante terminal:
-```
-py makeFolders.py <'ruta'> <folder1,folder2,folder3>
-```
-Se pasara la ruta y los nombres de las carpetas separadas por comas. 
+## app_makeFolders.py 📂
+Aplicacion para crear carpetas de forma rapida
 
