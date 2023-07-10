@@ -42,12 +42,22 @@ class MakeFoldersApp(tk.Tk):
                          hoverbackground= self.color_verdeFuerte)
 
         # Establecer el color de fondo de la ventana
-        self.configure(bg= self.color_negroPantalla)
+        self.configure(bg=self.color_negroPantalla)
+        
+        ##################################      BTN AYUDA       ###################################################
+        # Tomamos la img para el btn de ayuda
+        self.img_btn_ayuda = tk.PhotoImage(file="btn_ayuda.png")
+        
+        # Crear el btn 
+        self.boton_ayuda = tk.Button(image=self.img_btn_ayuda, command=self.ventana_ayuda)
+        self.boton_ayuda.configure(width=21, height=21)
+        self.boton_ayuda.grid(row=0, column=1, pady=5,sticky="e")
+        
         
         ##################################      PARTICION       ###################################################
         # Crear el texto de la particion sleccionada 
         self.texto_particion = ttk.Label(self, text="Partición ", anchor='w', compound='right')
-        self.texto_particion.grid(row=0, column=0, pady=5, sticky="w")
+        self.texto_particion.grid(row=1, column=0, pady=5, sticky="w")
         
         # Toma de las particiones del sistema
         particiones = disk_partitions()
@@ -55,21 +65,22 @@ class MakeFoldersApp(tk.Tk):
         
         # Crear el combox de la particion que se desea seleccionar
         self.entrada_particion = ttk.Combobox(self, values=tuple(txt_particiones), width=5)
-        self.entrada_particion.grid(row=0, column=1, pady=5, sticky="w")
+        self.entrada_particion.grid(row=1, column=1, pady=5, sticky="w")
         
         # En caso de una unica particion
         if len(txt_particiones) == 1:
             self.entrada_particion.insert(0,txt_particiones[0])
         
+        
         ##################################      RUTA       ###################################################
         # Crear el texto de la ruta a seleccionar
         self.texto_label_ruta = ttk.Label(self, text="Ruta ", anchor="w", compound="right")
-        self.texto_label_ruta.grid(row=1, column=0, pady=5, sticky="w")
+        self.texto_label_ruta.grid(row=2, column=0, pady=5, sticky="w")
     
         # Crear la entrada de texto de la ruta
         self.rutas =[]
         self.entrada_ruta = ttk.Combobox(self, width=80, values=self.rutas)
-        self.entrada_ruta.grid(row=1, column=1, pady=5)
+        self.entrada_ruta.grid(row=2, column=1, pady=5)
         
         # Vincular la tecla "Control-KeyRelease" a la función de autocompletar ruta
         self.entrada_ruta.bind("<Control-KeyRelease>", self.autocompletar_ruta)
@@ -78,39 +89,46 @@ class MakeFoldersApp(tk.Tk):
 
         ##################################      NOMBRE CARPETA       ###################################################
         # Crear el texto de la carpeta a seleccionar
-        self.texto_label_carpeta = ttk.Label(self, text="Nombre carpeta ", anchor="w")
-        self.texto_label_carpeta.grid(row=2, column=0, pady=5, sticky="w")
+        self.texto_label_carpeta = ttk.Label(self, text="Carpeta ", anchor="w")
+        self.texto_label_carpeta.grid(row=3, column=0, pady=5, sticky="w")
 
         # Crear la entrada de texto del nombre de la carpeta
         self.entrada_carpeta = ttk.Entry(self, width=83)
-        self.entrada_carpeta.grid(row=2, column=1, pady=5)
+        self.entrada_carpeta.grid(row=3, column=1, pady=5)
+        
+        # Crear el texto de las subcarpetas deseadas 
+        self.texto_label_subcarpetas = ttk.Label(self, text="SubCarpetas ", anchor="w")
+        self.texto_label_subcarpetas.grid(row=4, column=0, pady=5, sticky="w")
 
-
+        # Crear la entrada de las posibles subcarpetas
+        self.entrada_subcarpeta = ttk.Entry(self, width=83)
+        self.entrada_subcarpeta.grid(row=4, column=1, pady=5)
+        
         ##################################      BOTON       ###################################################
         # Crear el botón
         self.boton = ttk.Button(self, text="Crear", command=self.obtener_texto)
-        self.boton.grid(row=3, column=0, columnspan=2, pady=5)
+        self.boton.grid(row=5, column=0, columnspan=2, pady=5)
 
-        self.entrada_carpeta.bind("<Return>", self.obtener_texto)
-        
+        self.entrada_carpeta.bind("<Return>", self.obtener_texto)        
         
         
         ##################################      RESULTADO       ###################################################
         # Crear el texto de salida resultado 
         self.texto_label = ttk.Label(self, text=" ")
-        self.texto_label.grid(row=4, column=0, columnspan=2, pady=20)
+        self.texto_label.grid(row=6, column=0, columnspan=2, pady=20)
 
 
 
     ##################################      METODOS       ###################################################
     def obtener_texto(self, event=None):
         ruta = self.entrada_particion.get() + self.entrada_ruta.get()
-
+        carpeta = self.entrada_carpeta.get()
+        subCarpetas = self.validar_subCarpetas(self.entrada_subcarpeta.get())
+        
         if '/' in ruta:
             ruta.replace('/', '\\')
 
-        carpeta = self.entrada_carpeta.get()
-        print(carpeta)
+        
         if ruta == '':
             self.texto_label.configure(text=f"Selecciona primero una ruta", foreground=self.color_rojoError)
         elif not self.validar_ruta(ruta):
@@ -119,33 +137,57 @@ class MakeFoldersApp(tk.Tk):
             self.texto_label.configure(text=f"Da un nombre a la carpeta", foreground=self.color_rojoError)
         elif not self.validar_nombreCarpeta(carpeta):
             self.texto_label.configure(text=f"Nombre inválido", foreground=self.color_rojoError)
+        elif subCarpetas == -1:
+            self.texto_label.configure(text=f"Nombre subcarpeta inválido", foreground=self.color_rojoError)
         else:
-            self.crear_carpeta(ruta, carpeta)
+            self.crear_carpetas(ruta, carpeta, subCarpetas)
 
 
-    def validar_nombreCarpeta(self, carpeta: str):
+    def validar_nombreCarpeta(self, carpeta:str):
         patron = r'[<>:"/\\|?*]'
         coincidencias = findall(patron, carpeta)
         return len(coincidencias) == 0
 
 
-    def validar_ruta(self, ruta: str):
+    def validar_ruta(self, ruta:str):
         if os.path.exists(ruta):
             return True
         else:
             return False
 
 
-    def crear_carpeta(self, ruta, carpeta):
+    def validar_subCarpetas(self, subCarpetas:str):
+        
+        if subCarpetas == ' ':
+            return 0
+        
+        subCarpetas = subCarpetas.replace(",", " ")
+        list_subCarpetas = subCarpetas.split()
+        
+        if all(self.validar_nombreCarpeta(nombre) for nombre in list_subCarpetas):
+            return list_subCarpetas
+        else:
+            return -1
+            
+    
+    def crear_carpetas(self, ruta, carpeta, subCarpetas):
         ruta_carpeta = os.path.join(ruta, carpeta)
-
+        
         if not os.path.exists(ruta_carpeta):
             os.mkdir(ruta_carpeta)
-            self.texto_label.configure(text=f"Se ha creado la carpeta: {carpeta}", foreground=self.color_verde)
+            if not subCarpetas:
+                self.texto_label.configure(text=f"Se ha creado la carpeta: {carpeta}", foreground=self.color_verde)
+            else: 
+                for subcarp in subCarpetas:
+                    ruta_subCarp = ruta_carpeta + '//' + subcarp
+                    os.mkdir(ruta_subCarp)
+                self.texto_label.configure(text=f"Se ha creado la carpeta: {carpeta} y sus subcarpetas", foreground=self.color_verde)
             self.entrada_carpeta.delete(0, tk.END)
+            self.entrada_subcarpeta.delete(0, tk.END)
         else:
             self.texto_label.configure(text=f"Ya existe la carpeta: {carpeta}", foreground=self.color_rojoError)
             self.entrada_carpeta.delete(0, tk.END)
+            self.entrada_subcarpeta.delete(0, tk.END)
 
 
     def autocompletar_ruta(self, event):
@@ -161,6 +203,44 @@ class MakeFoldersApp(tk.Tk):
             self.entrada_ruta['values'] = tuple(posibles_rutas)
             self.entrada_ruta.event_generate('<Down>')
             
+
+    def ventana_ayuda(self):
+        top_level_window = tk.Toplevel(self)
+        top_level_window.title("Ayuda")
+        top_level_window.geometry("750x600")
+        top_level_window.configure(bg=self.color_negroPantalla)
+
+        # Crear el texto de ayuda
+        texto = """
+        Esta aplicación permite gestionar nuestro sistema de ficheros, creando carpetas 
+        y subcarpetas.
+    
+        Para ello, el menú mostrará las siguientes entradas:
+    
+        - Partición: Se deberá elegir la partición donde queramos trabajar.
+        - Ruta: Se escribirá la ruta donde deseamos crear nuestras carpetas.
+            Se facilitará el autocompletado de la ruta al presionar la tecla CTRL.
+        - Carpeta: Se escribirá el nombre de la carpeta a crear.
+            (Se deben cumplir los caracteres válidos)
+        - Subcarpeta: Se escribirá el o los nombres de las subcarpetas a crear, 
+            cada nombre quedará separado por una coma.
+            
+        A continuación se muestra una captura con un ejemplo de uso.
+        En este ejemplo, se creará en la ruta de una asignatura de la universidad la 
+        carpeta 'Teoría' y dentro de ella las carpetas 'Tema1', 'Tema2', 'Tema3' y 'Tema4'.
+        """
+        label_texto = tk.Label(top_level_window, justify=tk.LEFT, font=("Helvetica", 12), background=self.color_negroPantalla)
+        label_texto.pack(pady=20, padx=20)
+        label_texto.configure(text=texto)
+        label_texto.configure(foreground=self.color_verde)
+        label_texto.configure(anchor="nw")
+
+        # Cargar y mostrar la imagen
+        imagen = tk.PhotoImage(file="img_capAyuda.PNG")
+        label_imagen = tk.Label(top_level_window, image=imagen)
+        label_imagen.pack()
+    
+        top_level_window.mainloop()
 
     def run(self):
         self.mainloop()
