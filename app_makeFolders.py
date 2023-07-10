@@ -120,6 +120,11 @@ class MakeFoldersApp(tk.Tk):
 
 
     ##################################      METODOS       ###################################################
+    
+    """
+    Obtiene las entradas para crear las carpetas. Previamente comprobara que se cumplen ciertas condiciones que 
+    evitan fallos de codigo y mostrara un mesaje de error en caso de que se de una entrada incorrecta.
+    """
     def obtener_texto(self, event=None):
         ruta = self.entrada_particion.get() + self.entrada_ruta.get()
         carpeta = self.entrada_carpeta.get()
@@ -143,12 +148,19 @@ class MakeFoldersApp(tk.Tk):
             self.crear_carpetas(ruta, carpeta, subCarpetas)
 
 
+    """
+    Valida que la cadena pasada por argumento sea un nombre de carpeta valido, es decir, 
+    no contiene ningun caracter como [<>:"/\\|?*].
+    """
     def validar_nombreCarpeta(self, carpeta:str):
         patron = r'[<>:"/\\|?*]'
         coincidencias = findall(patron, carpeta)
         return len(coincidencias) == 0
 
 
+    """
+    Comprueba y valida que la ruta exista, en caso de que si devuelve True, en caso contrario False.
+    """
     def validar_ruta(self, ruta:str):
         if os.path.exists(ruta):
             return True
@@ -156,6 +168,10 @@ class MakeFoldersApp(tk.Tk):
             return False
 
 
+    """
+    En caso de que exista una entrada de las subcarpetas, divide la cadena en una lista de los
+    nombres de las subcarpetas y comprueba que los nombres sean validos.
+    """
     def validar_subCarpetas(self, subCarpetas:str):
         
         if subCarpetas == ' ':
@@ -170,6 +186,11 @@ class MakeFoldersApp(tk.Tk):
             return -1
             
     
+    
+    """
+    Crea las carpetas, en la ruta seleccionada. En caso de que este la entrada de las subcarpetas
+    las crea dentro de la carpeta primente creada. 
+    """
     def crear_carpetas(self, ruta, carpeta, subCarpetas):
         ruta_carpeta = os.path.join(ruta, carpeta)
         
@@ -190,6 +211,12 @@ class MakeFoldersApp(tk.Tk):
             self.entrada_subcarpeta.delete(0, tk.END)
 
 
+    
+    """
+    Autocompleta la entrada de la ruta al pulsar la tecla CTRL, si solo existe una sola posible 
+    entrada para autocompletar la autocompletara, si existen varias posibles rutas para autocompletar, se
+    abrira un combox con las posibles rutas.
+    """
     def autocompletar_ruta(self, event):
         ruta_ingresada = self.entrada_particion.get() + self.entrada_ruta.get()
         rutasCompleta = glob(ruta_ingresada + "*")
@@ -203,7 +230,10 @@ class MakeFoldersApp(tk.Tk):
             self.entrada_ruta['values'] = tuple(posibles_rutas)
             self.entrada_ruta.event_generate('<Down>')
             
-
+    """
+    Ventana de ayuda. Contendra un texto de explicacion del uso de la herramienta y
+    una captura de un ejemplo de uso.
+    """
     def ventana_ayuda(self):
         top_level_window = tk.Toplevel(self)
         top_level_window.title("Ayuda")
@@ -242,6 +272,9 @@ class MakeFoldersApp(tk.Tk):
     
         top_level_window.mainloop()
 
+    """
+    Metodo de activacion de la interfaz
+    """
     def run(self):
         self.mainloop()
 
