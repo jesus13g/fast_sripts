@@ -17,7 +17,7 @@ menu = (
 )
 
 # Cargar el icono
-icon_image = Image.open("icon_clip.jpeg")
+icon_image = Image.open("./img/icon_clip.jpeg")
 
 # Crear el icono en la bandeja del sistema
 icon = pystray.Icon("nombre_icono", icon_image, "Mi Aplicación", menu)

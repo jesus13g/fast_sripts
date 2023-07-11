@@ -46,7 +46,7 @@ class MakeFoldersApp(tk.Tk):
         
         ##################################      BTN AYUDA       ###################################################
         # Tomamos la img para el btn de ayuda
-        self.img_btn_ayuda = tk.PhotoImage(file="btn_ayuda.png")
+        self.img_btn_ayuda = tk.PhotoImage(file="./img/btn_ayuda.png")
         
         # Crear el btn 
         self.boton_ayuda = tk.Button(image=self.img_btn_ayuda, command=self.ventana_ayuda)
@@ -266,7 +266,7 @@ class MakeFoldersApp(tk.Tk):
         label_texto.configure(anchor="nw")
 
         # Cargar y mostrar la imagen
-        imagen = tk.PhotoImage(file="img_capAyuda.PNG")
+        imagen = tk.PhotoImage(file="./img/img_capAyuda.PNG")
         label_imagen = tk.Label(top_level_window, image=imagen)
         label_imagen.pack()
     
