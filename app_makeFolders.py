@@ -13,6 +13,8 @@ class MakeFoldersApp(tk.Tk):
         self.title("Make Folders")
         self.geometry("700x300")
         self.configure(padx=30, pady=30)
+        ruta_icon = "./img/icon_makeFolders.ico"
+        self.wm_iconbitmap(ruta_icon)
 
         self.color_negroPantalla = '#292929'
         self.color_verde = '#308446'
@@ -43,6 +45,8 @@ class MakeFoldersApp(tk.Tk):
 
         # Establecer el color de fondo de la ventana
         self.configure(bg=self.color_negroPantalla)
+        # Establecer icono
+        
         
         ##################################      BTN AYUDA       ###################################################
         # Tomamos la img para el btn de ayuda
