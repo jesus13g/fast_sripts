@@ -13,8 +13,7 @@ class MakeFoldersApp(tk.Tk):
         self.title("Make Folders")
         self.geometry("700x300")
         self.configure(padx=30, pady=30)
-        ruta_icon = "./img/icon_makeFolders.ico"
-        self.wm_iconbitmap(ruta_icon)
+        self.iconbitmap('.//img//icon_makeFolders.ico') # Establecer icono
 
         self.color_negroPantalla = '#292929'
         self.color_verde = '#308446'
@@ -45,7 +44,6 @@ class MakeFoldersApp(tk.Tk):
 
         # Establecer el color de fondo de la ventana
         self.configure(bg=self.color_negroPantalla)
-        # Establecer icono
         
         
         ##################################      BTN AYUDA       ###################################################
@@ -140,14 +138,19 @@ class MakeFoldersApp(tk.Tk):
         
         if ruta == '':
             self.texto_label.configure(text=f"Selecciona primero una ruta", foreground=self.color_rojoError)
+            
         elif not self.validar_ruta(ruta):
             self.texto_label.configure(text=f"Ruta inválida", foreground=self.color_rojoError)
+            
         elif carpeta == '':
             self.texto_label.configure(text=f"Da un nombre a la carpeta", foreground=self.color_rojoError)
+            
         elif not self.validar_nombreCarpeta(carpeta):
             self.texto_label.configure(text=f"Nombre inválido", foreground=self.color_rojoError)
+            
         elif subCarpetas == -1:
             self.texto_label.configure(text=f"Nombre subcarpeta inválido", foreground=self.color_rojoError)
+            
         else:
             self.crear_carpetas(ruta, carpeta, subCarpetas)
 

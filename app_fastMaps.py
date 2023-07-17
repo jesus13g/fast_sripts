@@ -14,8 +14,7 @@ class fastMaps(tk.Tk):
         self.title("Fast Maps")
         self.geometry("360x140")
         self.configure(padx=20, pady=20)
-        ruta_icon = "./img/icon_fastMaps.ico"
-        self.wm_iconbitmap(ruta_icon)
+        self.wm_iconbitmap("./img/icon_fastMaps.ico") # Establecer icono
 
         self.color_negroPantalla = '#292929'
         self.color_verde = '#308446'
@@ -65,7 +64,10 @@ class fastMaps(tk.Tk):
         self.entrada_origen.bind('<Return>', self.busqueda_googleMaps)
         self.entrada_destino.bind('<Return>', self.busqueda_googleMaps)
         
-        
+    
+    """
+    Realiza la busqueda en google maps 
+    """
     def busqueda_googleMaps(self, event):
         origen = self.entrada_origen.get()
         destino = self.entrada_destino.get()
@@ -79,19 +81,29 @@ class fastMaps(tk.Tk):
         elif origen != '' and destino != '':
             webbrowser.open('https://www.google.com/maps/dir/'+origen+'/'+destino+'/')
         
-        
+    """
+    Crea la ventana de ayuda 
+    """
     def ventana_ayuda(self):
         top_level_window = tk.Toplevel(self)
         top_level_window.title("Ayuda")
-        top_level_window.geometry("750x600")
+        top_level_window.geometry("575x225")
         top_level_window.configure(bg=self.color_negroPantalla)
 
         # Crear el texto de ayuda
         texto = """
-        texto ayuda
+        Esta herramineta abre tu navegador y realiza una busqueda 
+        en google Maps.
+        
+        Puedes realizar una busqueda de un único lugar, para ello escribe 
+        el lugar en una de las dos entradas, sea la de origen o destino y 
+        deja la otra vacia.
+        
+        Si deseas realizar una busqueda desde un lugar de origen a un 
+        destino escribe los lugares en  sus respectivas entradas.
         """
         label_texto = tk.Label(top_level_window, justify=tk.LEFT, font=("Helvetica", 12), background=self.color_negroPantalla)
-        label_texto.pack(pady=20, padx=20)
+        label_texto.pack(pady=10, padx=20)
         label_texto.configure(text=texto)
         label_texto.configure(foreground=self.color_verde)
         label_texto.configure(anchor="nw")
