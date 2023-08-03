@@ -8,10 +8,14 @@ def boton_makeFolders(icon, item):
 
 def boton_fastMaps(icon, item):
     subprocess.run(['python', 'app_fastMaps.py'])
+    
+def boton_backup(icon, item):
+    subprocess.run(['python', 'app_backuper.py'])
 
 menu = [
     item('Make Folders', lambda: boton_makeFolders(icon, item)),
-    item('Fast Maps', lambda: boton_fastMaps(icon, item))
+    item('Fast Maps', lambda: boton_fastMaps(icon, item)),
+    item('Backuper', lambda: boton_backup(icon, item))
 ]
 
 icon_image = Image.open("./img/icon_launcher.ico")
