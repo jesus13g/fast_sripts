@@ -17,10 +17,11 @@ class MakeFoldersApp(tk.Tk):
 
         self.color_negroPantalla = '#292929'
         self.color_verde = '#308446'
-        self.color_verdeFuerte = '008000'
+        self.color_verdeFuerte = '#266a38'
         self.color_rojoError = '#ff0000'
         
-        estilo = ttk.Style(self)
+        estilo = ttk.Style()
+        estilo.theme_use('clam')
         
         estilo.configure("TLabel", 
                          font=("Helvetica", 12), 
@@ -242,10 +243,11 @@ class MakeFoldersApp(tk.Tk):
     una captura de un ejemplo de uso.
     """
     def ventana_ayuda(self):
-        top_level_window = tk.Toplevel(self)
-        top_level_window.title("Ayuda")
-        top_level_window.geometry("750x600")
-        top_level_window.configure(bg=self.color_negroPantalla)
+        ventana_ayuda = tk.Toplevel(self)
+        ventana_ayuda.title("Ayuda")
+        ventana_ayuda.geometry("750x600")
+        ventana_ayuda.configure(bg=self.color_negroPantalla)
+        self.iconbitmap('.//img//icon_makeFolders.ico')
 
         # Crear el texto de ayuda
         texto = """
@@ -266,18 +268,17 @@ class MakeFoldersApp(tk.Tk):
         En este ejemplo, se creará en la ruta de una asignatura de la universidad la 
         carpeta 'Teoría' y dentro de ella las carpetas 'Tema1', 'Tema2', 'Tema3' y 'Tema4'.
         """
-        label_texto = tk.Label(top_level_window, justify=tk.LEFT, font=("Helvetica", 12), background=self.color_negroPantalla)
+        label_texto = tk.Label(ventana_ayuda, justify=tk.LEFT, font=("Helvetica", 12), background=self.color_negroPantalla)
         label_texto.pack(pady=20, padx=20)
-        label_texto.configure(text=texto)
-        label_texto.configure(foreground=self.color_verde)
-        label_texto.configure(anchor="nw")
+        label_texto.configure(text=texto, foreground=self.color_verde, anchor="nw")
+        
 
         # Cargar y mostrar la imagen
-        imagen = tk.PhotoImage(file="./img/img_capAyuda.PNG")
-        label_imagen = tk.Label(top_level_window, image=imagen)
+        imagen = tk.PhotoImage(file="./img/img_capAyuda_makeFolders.PNG")
+        label_imagen = tk.Label(ventana_ayuda, image=imagen)
         label_imagen.pack()
     
-        top_level_window.mainloop()
+        ventana_ayuda.mainloop()
 
     """
     Metodo de activacion de la interfaz
